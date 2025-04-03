@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('country_aliases', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('country_id');
-            $table->string('alias');
-            $table->string('type')->nullable();
-            $table->timestamps();
+            $table->string('code')->unique();
+            $table->string('official_name');
+            $table->string('common_name');
 
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-            $table->index('alias');
+            $table->unsignedBigInteger('country_id');
+            $table->foreign('country_id')->references('id')
+                ->on('countries');
+            $table->index('official_name');
+            $table->index('common_name');
 
             $table->timestamps();
         });

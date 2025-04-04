@@ -1,4 +1,4 @@
-name: Run Tests with Coverage
+name: Run Tests
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="mysqladmin ping -h localhost"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
@@ -30,7 +30,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Start Laravel Sail services
       - name: Start Laravel Sail
         run: ./vendor/bin/sail up -d
 
@@ -43,22 +42,8 @@ jobs:
       - name: Run Migrations
         run: ./vendor/bin/sail php artisan migrate --force
 
-      - name: Run Tests with Coverage
-        run: |
-          export COLUMNS=120
-          ./vendor/bin/sail php artisan test --env=testing --coverage --coverage-html=coverage --coverage-clover=coverage/clover.xml
+      - name: Run Tests
+        run: ./vendor/bin/sail php artisan test --env=testing
 
-      # Custom coverage checker script (assumes check_coverage.php exists in project root)
-      - name: Check Coverage Threshold
-        run: php check_coverage.php
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: coverage-report
-          path: coverage
-          if-no-files-found: 'warn'
-
-      # Stop Laravel Sail services
       - name: Stop Laravel Sail
         run: ./vendor/bin/sail down

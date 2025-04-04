@@ -2,12 +2,14 @@
 
 namespace Domain\Country\Models;
 
+use Domain\Country\Builders\CountryBuilder;
 use Domain\Language\Models\Language;
 use Domain\Region\Models\Region;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder;
 
 /**
  * @property int $id
@@ -28,6 +30,15 @@ class Country extends Model
         'population' => 'integer',
         'area' => 'float',
     ];
+
+    /**
+     * @param  Builder  $query
+     * @return CountryBuilder<Country>
+     */
+    public function newEloquentBuilder($query): CountryBuilder
+    {
+        return new CountryBuilder($query);
+    }
 
     /**
      * @return BelongsTo<Region, Country>

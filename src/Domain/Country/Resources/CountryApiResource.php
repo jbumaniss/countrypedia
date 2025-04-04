@@ -7,7 +7,7 @@ use Domain\Shared\Services\ApiService;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 
-class CountryResource
+class CountryApiResource
 {
     public function __construct(private readonly ApiService $service)
     {

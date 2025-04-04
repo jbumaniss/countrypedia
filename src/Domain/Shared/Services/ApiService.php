@@ -2,12 +2,10 @@
 
 namespace Domain\Shared\Services;
 
-use Domain\Country\Resources\CountryResource;
+use Domain\Country\Resources\CountryApiResource;
 use Domain\Shared\Traits\CanSendGetRequest;
-use Exception;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class ApiService
 {
@@ -18,8 +16,8 @@ class ApiService
         return Http::baseUrl($baseUrl);
     }
 
-    public function countryResource(): CountryResource
+    public function countryResource(): CountryApiResource
     {
-        return new CountryResource($this);
+        return new CountryApiResource($this);
     }
 }

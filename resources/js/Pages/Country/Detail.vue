@@ -41,34 +41,16 @@
 
 <script>
 import AppLayout from '../../Layouts/AppLayout.vue';
-
 export default {
   name: 'CountryDetails',
   components: {
     AppLayout
   },
-  data() {
-    return {
-      // For testing, use hardcoded data. In a real app, load data via API using the :id prop.
-      country: {
-        id: 1,
-        common_name: 'Latvia',
-        official_name: 'Republic of Latvia',
-        country_code: 'LV',
-        population: 1901548,
-        flag: '🇱🇻',
-        area: 64559,
-        is_favorite: false,
-        neighbors: [
-          { id: 2, common_name: 'Estonia' },
-          { id: 3, common_name: 'Lithuania' }
-        ],
-        languages: [
-          { id: 1, name: 'Latvian' },
-          { id: 2, name: 'Russian' }
-        ]
-      }
-    };
+  props: {
+    country: {
+      type: Object,
+      required: true
+    }
   },
   methods: {
     toggleFavorite() {

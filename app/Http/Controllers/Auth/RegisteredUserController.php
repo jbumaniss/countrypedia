@@ -36,6 +36,16 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $isUsersAllowedToRegister = config('app.allow_user_registration');
+        $allowedEmailList = config('app.user_registration_exclusion_list', []);
+        $abort = !$isUsersAllowedToRegister && !in_array($request->email, $allowedEmailList, true);
+
+        if($abort) {
+            return redirect(route('login', absolute: false))->withErrors([
+                'email' => 'Registration is disabled'
+            ]);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

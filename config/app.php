@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'is_user_allowed_to_register' => env('APP_ALLOW_USER_REGISTRATION', false),
+    'user_registration_exclusion_list' => explode(',', env('APP_USER_REGISTRATION_EXCLUSION_LIST', ''))
+
 ];

@@ -1,0 +1,49 @@
+name: Run Tests with Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Start Sail services (this assumes your Sail configuration is available)
+      - name: Start Laravel Sail
+        run: ./vendor/bin/sail up -d
+
+      - name: Copy .env.testing to .env
+        run: cp .env.testing .env
+
+      - name: Generate Application Key
+        run: ./vendor/bin/sail php artisan key:generate
+
+      - name: Run Migrations
+        run: ./vendor/bin/sail php artisan migrate --force
+
+      # Run tests with code coverage using Laravel's built-in test command (which supports parallel testing if desired)
+      - name: Run Tests with Coverage
+        run: |
+          # Run tests inside Sail; adjust --coverage options as needed
+          ./vendor/bin/sail php artisan test --env=testing --coverage --coverage-html=coverage --coverage-clover=coverage/clover.xml
+
+      # Run a custom PHP script to check if the coverage meets the minimum threshold.
+      # (Ensure you have created a file like check_coverage.php in your project root)
+      - name: Check Coverage Threshold
+        run: php check_coverage.php
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage
+
+      # Shut down Sail services when done
+      - name: Stop Laravel Sail
+        run: ./vendor/bin/sail down

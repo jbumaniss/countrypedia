@@ -2,8 +2,18 @@
   <AppLayout title="Countrypedia Home">
     <div class="container mx-auto p-4">
       <SearchInput @update-query="handleSearch" />
-      <CountryList header-title="Search Results" :countries="searchResults" />
-      <FavoriteCountries :favorites="favoriteCountries" />
+
+      <CountryList
+          v-if="searchResults.length > 0"
+          header-title="Search Results"
+          :countries="searchResults"
+      />
+
+      <CountryList
+          v-if="favoriteCountriesToShow.length > 0"
+          header-title="Favorite Countries"
+          :countries="favoriteCountriesToShow"
+      />
     </div>
   </AppLayout>
 </template>
@@ -11,44 +21,56 @@
 <script>
 import AppLayout from '../../Layouts/AppLayout.vue';
 import SearchInput from '../../Components/SearchInput.vue';
-import FavoriteCountries from '../../Components/FavoriteCountries.vue';
 import CountryList from '../../Components/CountryList.vue';
+import { getFavorites } from '../../utils/favorites';
 
 export default {
   name: 'Home',
   components: {
     AppLayout,
     SearchInput,
-    FavoriteCountries,
     CountryList
   },
   props: {
-    countries: {
+    favoriteCountries: {
       type: Array,
       default: () => []
     },
-    favoriteCountries: {
+    countries: {
       type: Array,
       default: () => []
     }
   },
   data() {
     return {
-      searchResults: []
+      searchResults: [],
+      localFavorites: []
     };
+  },
+  computed: {
+    favoriteCountriesToShow() {
+      return (this.favoriteCountries && this.favoriteCountries.length > 0)
+          ? this.favoriteCountries
+          : this.localFavorites;
+    }
   },
   methods: {
     handleSearch(query) {
       console.log('Searching for:', query);
       if (query.trim() !== '') {
-        // Simulate search by filtering the countries prop
         this.searchResults = this.countries.filter(country =>
             country.common_name.toLowerCase().includes(query.toLowerCase())
         );
       } else {
         this.searchResults = [];
       }
+    },
+    loadFavorites() {
+      this.localFavorites = getFavorites();
     }
+  },
+  mounted() {
+    this.loadFavorites();
   }
 };
 </script>

@@ -1,5 +1,6 @@
 {
   "name": "Laravel Sail Codespace",
+  "initializeCommand": "composer install --ignore-platform-reqs",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "laravel.test",
   "workspaceFolder": "/var/www/html",

@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Tests with Sail
 
 on:
   push:
@@ -14,23 +14,28 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: mbstring, bcmath, pdo_sqlite
-          ini-values: post_max_size=256M, upload_max_filesize=256M
-
+      # Install composer dependencies
       - name: Install Composer Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
+      # Copy your CI-specific env file (for testing, using SQLite in-memory for example)
       - name: Setup CI Environment
         run: |
           cp .env.ci .env
           php artisan key:generate
 
-      - name: Run Migrations
-        run: php artisan migrate --force
+      # Start Laravel Sail services
+      - name: Start Laravel Sail
+        run: ./vendor/bin/sail up -d
 
+      # Run migrations (if needed)
+      - name: Run Migrations
+        run: ./vendor/bin/sail php artisan migrate --force
+
+      # Run tests
       - name: Run Tests
-        run: php artisan test --env=testing
+        run: ./vendor/bin/sail php artisan test --env=testing
+
+      # Stop Laravel Sail services
+      - name: Stop Laravel Sail
+        run: ./vendor/bin/sail down

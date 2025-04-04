@@ -30,6 +30,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Install Composer Dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: List vendor/bin directory (for debugging)
+        run: ls -la vendor/bin
+
       - name: Start Laravel Sail
         run: ./vendor/bin/sail up -d
 

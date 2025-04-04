@@ -1,9 +1,9 @@
 <template>
   <ion-item>
     <ion-input
+        label-placement="floating"
         v-model="query"
         @keyup.enter="onSearch"
-        placeholder="Type and press Enter"
         label="Search for a country"
     ></ion-input>
   </ion-item>

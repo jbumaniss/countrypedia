@@ -1,8 +1,3 @@
-<script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-</script>
-
 <template>
     <Head title="Dashboard" />
 
@@ -23,8 +18,39 @@ import { Head } from '@inertiajs/vue3';
                     <div class="p-6 text-gray-900">
                         You're logged in!
                     </div>
+
+                  <div class="p-6 text-gray-900" v-if="isSupervisor">
+                    <Link
+                        href="/supervisor/action"
+                        method="post"
+                        class="text-sm text-gray-700 dark:text-gray-500 hover:underline"
+                    >
+                        Action Import
+                    </Link>
+                  </div>
                 </div>
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
+
+<script>
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { Head } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+
+export default {
+  name: 'Dashboard',
+  components: {
+    AuthenticatedLayout,
+    Head,
+    Link
+  },
+  props: {
+    isSupervisor: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
+</script>

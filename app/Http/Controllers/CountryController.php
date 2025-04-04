@@ -24,10 +24,8 @@ class CountryController extends Controller
 
     public function show($id): Response
     {
-        $country = Country::query()->findOrFail($id);
-
         return Inertia::render('Country/Detail', [
-            'country' => $country,
+            'country' => $this->service->show($id),
         ]);
     }
 }

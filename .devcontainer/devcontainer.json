@@ -1,0 +1,13 @@
+{
+  "name": "Laravel Sail",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "laravel.test",
+  "workspaceFolder": "/var/www/html",
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "composer install && php artisan key:generate && php artisan migrate",
+  "forwardPorts": [80, 8000],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": []
+}

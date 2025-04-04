@@ -5,10 +5,18 @@ services:
       context: ./Docker/Runtimes/8.4
     env_file:
       - .env.csp
+    depends_on:
+      - mysql
   mysql:
+    image: mysql:8.0
     env_file:
       - .env.csp
+    volumes:
+      - mysql_data:/var/lib/mysql
   redis:
     image: redis:alpine
     env_file:
       - .env.csp
+
+volumes:
+  mysql_data:

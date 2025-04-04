@@ -1,10 +1,22 @@
 {
   "name": "Laravel Sail Codespace",
-  "image": "laravelsail/php84-composer:latest",
+  "image": "laravelsail/php82-composer:latest",
   "workspaceFolder": "/var/www/html",
   "postCreateCommand": "composer install && php artisan key:generate && php artisan migrate",
   "forwardPorts": [80, 5173],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
-  }
+  },
+  "extensions": [
+    "ms-azuretools.vscode-docker",
+    "ms-vscode.remote-containers",
+    "eamodio.gitlens",
+    "bmewburn.vscode-intelephense-client",
+    "editorconfig.editorconfig",
+    "mehedidracula.php-namespace-resolver",
+    "onecentlin.laravel-blade",
+    "ryannaddy.laravel-artisan",
+    "shufo.vscode-blade-formatter"
+  ],
+  "remoteUser": "vscode"
 }

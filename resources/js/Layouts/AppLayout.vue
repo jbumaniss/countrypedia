@@ -2,7 +2,9 @@
 <ion-page class="flex flex-col h-screen">
 <ion-header>
   <ion-toolbar class="bg-blue-500">
-    <ion-title>{{ title }}</ion-title>
+    <ion-breadcrumbs>
+      <ion-breadcrumb href="/">Countries</ion-breadcrumb>
+    </ion-breadcrumbs>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">

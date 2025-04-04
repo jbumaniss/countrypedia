@@ -9,5 +9,6 @@ services:
     env_file:
       - .env.csp
   redis:
+    image: redis:alpine
     env_file:
       - .env.csp

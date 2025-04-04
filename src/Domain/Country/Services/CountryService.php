@@ -15,7 +15,7 @@ class CountryService
         return Country::query()->list()->get();
     }
 
-    public function show(int $id): Country
+    public function show(int $id): ?Country
     {
         return Country::query()
             ->find($id);

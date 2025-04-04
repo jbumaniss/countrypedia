@@ -1,6 +1,11 @@
 <template>
   <ion-item>
-    <ion-input label="Search for a country" v-model="query" @ionChange="onChange"></ion-input>
+    <ion-input
+        v-model="query"
+        @keyup.enter="onSearch"
+        placeholder="Type and press Enter"
+        label="Search for a country"
+    ></ion-input>
   </ion-item>
 </template>
 
@@ -13,7 +18,7 @@ export default {
     };
   },
   methods: {
-    onChange() {
+    onSearch() {
       this.$emit('update-query', this.query);
     }
   }

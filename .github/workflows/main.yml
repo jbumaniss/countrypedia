@@ -43,7 +43,7 @@ jobs:
       - name: Setup Environment
         run: |
           # Use the CI-specific environment file
-          cp .env.testing .env
+          cp .env.ci .env
           php artisan key:generate
           # Set the database configuration
           sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env

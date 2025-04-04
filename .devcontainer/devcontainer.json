@@ -1,10 +1,10 @@
 {
   "name": "Laravel Sail Codespace",
-  "initializeCommand": "composer install --ignore-platform-reqs",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "laravel.test",
   "workspaceFolder": "/var/www/html",
-  "postCreateCommand": "composer install && php artisan key:generate && php artisan migrate",
+  "initializeCommand": "cd /var/www/html && ./vendor/bin/sail composer install --ignore-platform-reqs",
+  "postCreateCommand": "./vendor/bin/sail artisan key:generate && ./vendor/bin/sail artisan migrate",
   "forwardPorts": [80, 5173],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"

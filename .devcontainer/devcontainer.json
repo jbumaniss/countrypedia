@@ -1,24 +1,29 @@
 {
-  "name": "Laravel Sail Codespace",
-  "dockerComposeFile": "../docker-compose.yml",
+  "name": "Existing Docker Compose (Extend)",
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
   "service": "laravel.test",
   "workspaceFolder": "/var/www/html",
-  "initializeCommand": "cd /var/www/html && ./vendor/bin/sail composer install --ignore-platform-reqs",
-  "postCreateCommand": "./vendor/bin/sail artisan key:generate && ./vendor/bin/sail artisan migrate",
-  "forwardPorts": [80, 5173],
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "ms-vscode.remote-containers",
+        "eamodio.gitlens",
+        "bmewburn.vscode-intelephense-client",
+        "editorconfig.editorconfig",
+        "mehedidracula.php-namespace-resolver",
+        "onecentlin.laravel-blade",
+        "ryannaddy.laravel-artisan",
+        "shufo.vscode-blade-formatter"
+      ],
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      }
+    }
   },
-  "extensions": [
-    "ms-azuretools.vscode-docker",
-    "ms-vscode.remote-containers",
-    "eamodio.gitlens",
-    "bmewburn.vscode-intelephense-client",
-    "editorconfig.editorconfig",
-    "mehedidracula.php-namespace-resolver",
-    "onecentlin.laravel-blade",
-    "ryannaddy.laravel-artisan",
-    "shufo.vscode-blade-formatter"
-  ],
-  "remoteUser": "vscode"
+  "remoteUser": "sail",
+  "forwardPorts": [80, 5173],
+  "postCreateCommand": "chown -R 1000:1000 /var/www/html"
 }

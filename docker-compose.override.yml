@@ -3,3 +3,11 @@ services:
   laravel.test:
     build:
       context: ./Docker/Runtimes/8.4
+    env_file:
+      - .env.csp
+  mysql:
+    env_file:
+      - .env.csp
+  redis:
+    env_file:
+      - .env.csp

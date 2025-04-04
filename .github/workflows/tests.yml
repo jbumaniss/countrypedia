@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Tests with PHP 8.2
 
 on:
   push:
@@ -14,22 +14,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1'
-          extensions: mbstring, bcmath, pdo_mysql
-
-      - name: Install Composer Dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
-
-      - name: Setup Environment
+      - name: Run Tests in PHP 8.2 Container
         run: |
-          cp .env.testing .env
-          php artisan key:generate
-
-      - name: Run Migrations
-        run: php artisan migrate --force
-
-      - name: Run Tests
-        run: php artisan test --env=testing
+          docker run --rm \
+            -v $(pwd):/opt/project \
+            -w /opt/project \
+            laravel/sail-8.2/app:latest \
+            bash -c "\
+              composer install --prefer-dist --no-interaction && \
+              cp .env.testing .env && \
+              php artisan key:generate && \
+              php artisan migrate --force && \
+              php artisan test --env=testing"

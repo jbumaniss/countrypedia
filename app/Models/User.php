@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isSupervisor(): bool
+    {
+        return (bool) $this->is_supervisor;
+    }
 }

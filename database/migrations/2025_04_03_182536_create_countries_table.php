@@ -22,7 +22,10 @@ return new class extends Migration
             $table->float('area');
 
             $table->unsignedBigInteger('region_id');
+            $table->unsignedBigInteger('sub_region_id')->nullable();
+
             $table->foreign('region_id')->references('id')->on('regions');
+            $table->foreign('sub_region_id')->references('id')->on('sub_regions');
 
             $table->timestamps();
         });

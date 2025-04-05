@@ -6,6 +6,7 @@ use Domain\Country\Builders\CountryBuilder;
 use Domain\Language\Models\Language;
 use Domain\Region\Models\Region;
 use Domain\Region\Models\SubRegion;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,6 +28,8 @@ use Illuminate\Database\Query\Builder;
  */
 class Country extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     protected $casts = [

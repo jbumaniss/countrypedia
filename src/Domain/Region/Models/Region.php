@@ -2,6 +2,7 @@
 
 namespace Domain\Region\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Region extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
 }

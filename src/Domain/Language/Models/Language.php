@@ -4,6 +4,7 @@ namespace Domain\Language\Models;
 
 use Domain\Country\Models\Country;
 use Domain\Language\Builders\LanguageBuilder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\Builder;
@@ -19,6 +20,8 @@ use Illuminate\Support\Collection;
  */
 class Language extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     /**

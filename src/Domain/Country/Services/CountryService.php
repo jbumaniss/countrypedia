@@ -14,10 +14,12 @@ class CountryService
     {
         return Country::query()
             ->list()
-                ->whereHas('aliases', function ($query) use ($search) {
+            ->when($search, function ($query, $search) {
+                $query->whereHas('aliases', function ($query) use ($search) {
                     $query->where('official', 'like', "%{$search}%")
                         ->orWhere('common', 'like', "%{$search}%");
-                })
+                });
+            })
             ->orderBy('common_name')
             ->get();
     }

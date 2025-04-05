@@ -76,12 +76,12 @@ class CountryImportAction
                 })->pluck('id')
             );
 
-            CountryAlias::query()->updateOrCreate([
+            $country->aliases()->updateOrCreate([
                 'country_id' => $country->id,
                 'code' => $countryDto->countryCode,
             ], [
-                'official_name' => $countryDto->officialName,
-                'common_name' => $countryDto->commonName,
+                'official' => $countryDto->officialName,
+                'common' => $countryDto->commonName,
             ]);
         });
     }

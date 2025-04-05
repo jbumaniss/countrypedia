@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $id
  * @property string $code
- * @property string $official_name
- * @property string $common_name
+ * @property string $official
+ * @property string $common
  * @property int $country_id
  * @property Country $country
  */

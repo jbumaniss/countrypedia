@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
 
             $table->string('code')->unique();
-            $table->string('official_name');
-            $table->string('common_name');
+            $table->string('official');
+            $table->string('common');
 
             $table->unsignedBigInteger('country_id');
             $table->foreign('country_id')->references('id')
                 ->on('countries');
-            $table->index('official_name');
-            $table->index('common_name');
+            $table->index('official');
+            $table->index('common');
 
             $table->timestamps();
         });

@@ -26,4 +26,18 @@ class ImportCountriesCommandTest extends TestCase
         $command = new ImportCountriesCommand();
         $this->assertEquals('import:countries', $command->getName());
     }
+
+    //test when feils
+    public function test_import_countries_command_failure(): void
+    {
+        $this->mock(CountryImportAction::class, function ($mock) {
+            $mock->shouldReceive('execute')
+                ->once()
+                ->andThrow(new \Exception('API connection error'));
+        });
+        $this->artisan('import:countries')
+            ->expectsOutput('Fetching countries data from API...')
+            ->expectsOutput('Error fetching countries data: API connection error')
+            ->assertExitCode(1);
+    }
 }

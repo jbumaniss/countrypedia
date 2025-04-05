@@ -40,11 +40,10 @@ class CountryImportAction
         $countriesData = $response->getData(true);
 
         if($response->status() !== 200) {
-            $bodyString = implode('', $countriesData);
             Log::error('Failed to fetch countries data', [
-                'response' => $bodyString
+                'response' => $response,
             ]);
-            return 'Failed to fetch countries data. Error: ' . $bodyString;
+            return 'Failed to fetch countries data. Error: ' . $response;
         }
 
         $countriesDtos = $this->processCountriesData($countriesData);
@@ -84,10 +83,13 @@ class CountryImportAction
             $region = Region::query()->firstOrCreate([
                 'name' => $countryDto->region,
             ]);
-            $subRegion = SubRegion::query()->firstOrCreate([
-                'region_id' => $region->id,
-                'name' => $countryDto->subRegion,
-            ]);
+            $subRegion = null;
+            if($countryDto->subRegion) {
+                $subRegion = SubRegion::query()->firstOrCreate([
+                    'region_id' => $region->id,
+                    'name' => $countryDto->subRegion,
+                ]);
+            }
 
             $country = Country::query()->firstOrCreate([
                 'common_name' => $countryDto->commonName,
@@ -97,7 +99,7 @@ class CountryImportAction
                 'flag' => $countryDto->flag,
                 'area' => $countryDto->area,
                 'region_id' => $region->id,
-                'sub_region_id' => $subRegion->id,
+                'sub_region_id' => $subRegion?->id,
             ]);
 
             $country->languages()->sync(

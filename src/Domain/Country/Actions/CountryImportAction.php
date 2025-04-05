@@ -2,9 +2,9 @@
 
 namespace Domain\Country\Actions;
 
+use Domain\Country\DataTransferObjects\CountryAliasDto;
 use Domain\Country\DataTransferObjects\CountryDto;
 use Domain\Country\Models\Country;
-use Domain\Country\Models\CountryAlias;
 use Domain\Language\DataTransferObjects\LanguageDto;
 use Domain\Language\Models\Language;
 use Domain\Region\Models\Region;
@@ -29,10 +29,11 @@ class CountryImportAction
         try{
             $response = $this->apiService->countryResource()->list();
         } catch (ConnectionException $e) {
+            $shortError = substr($e->getMessage(), 0, 100);
             Log::error('Failed to fetch countries data', [
-                'exception' => $e,
+                'exception' => $shortError,
             ]);
-            return "Failed to fetch countries data.";
+            return "Failed to fetch countries data. Error: {$shortError}";
         }
 
         $countriesData = $response->getData(true);
@@ -76,13 +77,16 @@ class CountryImportAction
                 })->pluck('id')
             );
 
-            $country->aliases()->updateOrCreate([
-                'country_id' => $country->id,
-                'code' => $countryDto->countryCode,
-            ], [
-                'official' => $countryDto->officialName,
-                'common' => $countryDto->commonName,
-            ]);
+            $countryDto->countryAliases->each(function (CountryAliasDto $countryAliasDto)
+            use ($country) {
+                $country->aliases()->updateOrCreate([
+                    'country_id' => $country->id,
+                    'code' => $countryAliasDto->code,
+                ], [
+                    'official' => $countryAliasDto->official,
+                    'common' => $countryAliasDto->common,
+                ]);
+            });
         });
     }
 }

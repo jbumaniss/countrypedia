@@ -3,7 +3,7 @@
 <ion-header>
   <ion-toolbar class="bg-blue-500">
     <ion-breadcrumbs>
-      <ion-breadcrumb href="/">Countries</ion-breadcrumb>
+      <ion-breadcrumb :href="route('countries.index')">Countries</ion-breadcrumb>
     </ion-breadcrumbs>
   </ion-toolbar>
 </ion-header>

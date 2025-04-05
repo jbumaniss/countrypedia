@@ -1,17 +1,24 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
-import Index from '../Pages/Country/Index.vue';
-import Detail from '../Pages/Country/Detail.vue';
+import CountryIndex from '../Pages/Country/Index.vue';
+import CountryDetail from '../Pages/Country/Detail.vue';
+import LanguageDetail from '../Pages/Language/Detail.vue';
 
 const routes = [
     {
-        path: '/',
+        path: route('countries.index'),
         name: 'Home',
-        component: Index
+        component: CountryIndex
     },
     {
-        path: '/country/:id',
+        path: route('countries.show', { id: ':id' }),
         name: 'CountryDetails',
-        component: Detail,
+        component: CountryDetail,
+        props: true
+    },
+    {
+        path: route('languages.show', { id: ':id' }),
+        name: 'LanguageDetails',
+        component: LanguageDetail,
         props: true
     }
 ];

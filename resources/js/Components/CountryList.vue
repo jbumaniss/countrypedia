@@ -4,7 +4,7 @@
     <ion-item
         v-for="country in countries"
         :key="country.id"
-        :href="`/country/${country.id}`">
+        :href="route('countries.show', country.id)">
       <ion-label>{{ country.common_name }}</ion-label>
     </ion-item>
   </ion-list>

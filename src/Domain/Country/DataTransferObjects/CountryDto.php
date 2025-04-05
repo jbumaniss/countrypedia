@@ -21,6 +21,7 @@ class CountryDto extends Data
         public string $flag,
         public float $area,
         public string $region,
+        public string $subRegion,
         public Collection $languages,
         public Collection $countryAliases,
     )
@@ -37,6 +38,7 @@ class CountryDto extends Data
         $flag = Arr::get($country, 'flag');
         $area = Arr::get($country, 'area');
         $region = Arr::get($country, 'region');
+        $subRegion = Arr::get($country, 'subregion');
         $languages = LanguageDto::collect(
             collect(Arr::get($country, 'languages'))->map(function ($language, $key) {
                 return [
@@ -62,6 +64,7 @@ class CountryDto extends Data
             flag: $flag,
             area: $area,
             region: $region,
+            subRegion: $subRegion,
             languages: $languages,
             countryAliases: $countryAliases,
         );

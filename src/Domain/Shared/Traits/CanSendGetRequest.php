@@ -14,7 +14,12 @@ trait CanSendGetRequest
      */
     public function get(PendingRequest $request, string $url): Response
     {
-        $response = $request->timeout(30)
+        $response = $request
+            ->withHeaders([
+                'Accept' => '*/*',
+                'Accept-Encoding' => 'gzip, deflate, br',
+                'Connection' => 'keep-alive',
+            ])
             ->get(url: $url);
 
         if ($response->serverError()) {

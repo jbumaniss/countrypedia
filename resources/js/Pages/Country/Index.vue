@@ -1,20 +1,23 @@
 <template>
   <AppLayout title="Countrypedia Home">
-    <div class="container mx-auto p-4">
+    <ion-card>
+      <ion-card-content>
       <SearchInput @update-query="handleSearch" />
+        <CountryList
+            v-if="searchResults.length > 0"
+            header-title="Search Results"
+            :countries="searchResults"
+        />
+      </ion-card-content>
+    </ion-card>
 
-      <CountryList
-          v-if="searchResults.length > 0"
-          header-title="Search Results"
-          :countries="searchResults"
-      />
+
 
       <CountryList
           v-if="favoriteCountriesToShow.length > 0"
           header-title="Favorite Countries"
           :countries="favoriteCountriesToShow"
       />
-    </div>
   </AppLayout>
 </template>
 

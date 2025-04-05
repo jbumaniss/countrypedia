@@ -1,21 +1,25 @@
 <template>
-  <ion-item>
-    <ion-input
-        label-placement="floating"
-        v-model="query"
-        @keyup.enter="onSearch"
-        label="Search for a country"
-    ></ion-input>
-  </ion-item>
+  <ion-searchbar
+  v-model="query"
+  @ionClear="() => { query = ''; onSearch(); }"
+  ></ion-searchbar>
 </template>
 
 <script>
+import { searchOutline } from 'ionicons/icons';
+
 export default {
   name: 'SearchInput',
   data() {
     return {
+      searchOutline,
       query: ''
     };
+  },
+  watch: {
+    query() {
+      this.onSearch();
+    }
   },
   methods: {
     onSearch() {

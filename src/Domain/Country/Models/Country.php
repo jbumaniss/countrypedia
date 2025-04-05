@@ -5,6 +5,7 @@ namespace Domain\Country\Models;
 use Domain\Country\Builders\CountryBuilder;
 use Domain\Language\Models\Language;
 use Domain\Region\Models\Region;
+use Domain\Region\Models\SubRegion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,7 +21,9 @@ use Illuminate\Database\Query\Builder;
  * @property string $flag
  * @property float $area
  * @property int $region_id
+ * @property int $sub_region_id
  * @property Region $region
+ * @property SubRegion $subRegion
  */
 class Country extends Model
 {
@@ -46,6 +49,14 @@ class Country extends Model
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+
+    /**
+     * @return BelongsTo<Region, Country>
+     */
+    public function subRegion(): BelongsTo
+    {
+        return $this->belongsTo(SubRegion::class);
     }
 
     /**

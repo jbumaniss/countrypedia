@@ -23,7 +23,27 @@ class CountryService
 
     public function show(int $id): ?Country
     {
-        return Country::query()
+        $country = Country::query()
+            ->with([
+                'languages',
+            ])
             ->find($id);
+
+        if(!$country) {
+            return null;
+        }
+
+        $country->setRelation('neighbours', Country::query()
+            ->where('sub_region_id', $country->sub_region_id)
+            ->where('id', '!=', $country->id)
+            ->get());
+
+        $rank = Country::query()
+                ->where('population', '>', $country->population)
+                ->count() + 1;
+
+        $country->setAttribute('population_rank', $rank);
+
+        return $country;
     }
 }

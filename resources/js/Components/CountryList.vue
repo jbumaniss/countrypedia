@@ -1,6 +1,9 @@
 <template>
   <ion-list>
-    <ion-list-header>{{ headerTitle }}</ion-list-header>
+    <ion-list-header lines="inset">
+      <ion-label
+      class="font-bold"
+      >{{ headerTitle }}</ion-label></ion-list-header>
     <ion-item
         v-for="country in countries"
         :key="country.id"

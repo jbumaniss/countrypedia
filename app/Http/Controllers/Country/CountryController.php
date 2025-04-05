@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Country;
 
-use Domain\Country\Models\Country;
+use App\Http\Controllers\Controller;
 use Domain\Country\Services\CountryService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\Request;
 
 class CountryController extends Controller
 {

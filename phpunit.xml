@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
+         failOnRisky="true"
 >
     <testsuites>
         <testsuite name="App">
@@ -17,7 +18,9 @@
     </testsuites>
     <source>
         <include>
-            <directory>app</directory>
+            <directory suffix=".php">app</directory>
+            <directory suffix=".php">domain</directory>
+            <directory suffix=".php">feature</directory>
         </include>
     </source>
     <php>

@@ -49,3 +49,31 @@ Countrypedia is a Laravel-based country encyclopedia web application. This READM
 6. **Access the Application**
 
    Open your web browser and navigate to `http://localhost`.
+
+
+## Testing
+
+### Run Tests
+
+```bash
+   ./vendor/bin/sail test
+```
+
+### Run Tests with Specific Filter
+
+```bash
+   ./vendor/bin/sail test --filter=SomeTest
+```
+
+### Run Tests with Coverage
+
+```bash
+   ./vendor/bin/sail test --coverage --coverage-filter=src/App
+   ./vendor/bin/sail test --coverage --coverage-filter=src/Domain
+```
+
+## Miscellaneous
+
+```bash
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+```

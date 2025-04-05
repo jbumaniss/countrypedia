@@ -135,12 +135,10 @@ class CountryImportActionTest extends TestCase
         });
 
         $regionB = Region::query()->firstWhere('name', 'Antarctic');
-        $subRegionB = Subregion::query()->firstWhere('name', '');
         $countryB = Country::query()->firstWhere('common_name', 'South Georgia and the South Sandwich Islands');
         $languageB = Language::query()->firstWhere('name', 'English');
         $countryAliasesB = CountryAlias::query()->where('country_id', $countryB->id)->get();
         $this->assertNotNull($regionB);
-        $this->assertNotNull($subRegionB);
         $this->assertNotNull($countryB);
         $this->assertEquals('South Georgia and the South Sandwich Islands', $countryB->official_name);
         $this->assertEquals('South Georgia and the South Sandwich Islands', $countryB->common_name);
@@ -149,9 +147,8 @@ class CountryImportActionTest extends TestCase
         $this->assertEquals('🇬🇸', $countryB->flag);
         $this->assertEquals(3903, $countryB->area);
         $this->assertEquals($regionB->id, $countryB->region_id);
-        $this->assertEquals($subRegionB->id, $countryB->sub_region_id);
+        $this->assertNull($countryB->subRegion);
         $this->assertEquals('Antarctic', $countryB->region->name);
-        $this->assertEquals('', $countryB->subRegion->name);
         $this->assertEquals('English', $languageB->name);
         $this->assertEquals('eng', $languageB->code);
         $this->assertEquals(1, $countryB->languages()->count());
@@ -199,6 +196,44 @@ class CountryImportActionTest extends TestCase
         Http::fake([
             'https://restcountries.com/v3.1/all' => Http::sequence()
                 ->push(['invalid' => 'data']),
+        ]);
+
+        $response = $this->action->execute();
+
+        $this->assertStringContainsString('Countries imported successfully!', $response);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function test_it_can_handle_missing_subregion(): void
+    {
+        $mockData = [
+            [
+                'name' => [
+                    'common' => 'Grenada',
+                    'official' => 'Grenada',
+                    'nativeName' => [
+                        'eng' => [
+                            'official' => 'Grenada',
+                            'common' => 'Grenada',
+                        ],
+                    ],
+                ],
+                'tld' => ['.gd'],
+                'cca2' => 'GD',
+                'population' => 112523,
+                'flag' => '🇬🇩',
+                'area' => 344,
+                'region' => 'Americas',
+                'languages' => [
+                    'eng' => 'English',
+                ],
+            ]
+        ];
+        Http::fake([
+            'https://restcountries.com/v3.1/all' => Http::sequence()
+                ->push($mockData),
         ]);
 
         $response = $this->action->execute();

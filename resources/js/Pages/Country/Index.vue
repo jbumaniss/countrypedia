@@ -22,7 +22,8 @@
 import AppLayout from '../../Layouts/AppLayout.vue';
 import SearchInput from '../../Components/SearchInput.vue';
 import CountryList from '../../Components/CountryList.vue';
-import { getFavorites } from '../../utils/favorites';
+import { getFavorites } from '@/utils/favorites.js';
+import { router } from '@inertiajs/vue3'
 
 export default {
   name: 'Home',
@@ -55,15 +56,25 @@ export default {
     }
   },
   methods: {
-    handleSearch(query) {
-      console.log('Searching for:', query);
-      if (query.trim() !== '') {
-        this.searchResults = this.countries.filter(country =>
-            country.common_name.toLowerCase().includes(query.toLowerCase())
-        );
-      } else {
+    async handleSearch(query) {
+      const trimmed = query.trim();
+      if (!trimmed) {
         this.searchResults = [];
+        return;
       }
+
+      router.get('/', {
+        search: trimmed
+      }, {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: (response) => {
+          this.searchResults = response.props.countries;
+        },
+        onError: (error) => {
+          console.error('Search error:', error);
+        }
+      });
     },
     loadFavorites() {
       this.localFavorites = getFavorites();

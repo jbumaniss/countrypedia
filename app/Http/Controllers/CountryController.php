@@ -7,18 +7,21 @@ use Domain\Country\Services\CountryService;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
 
 class CountryController extends Controller
 {
     public function __construct(private readonly CountryService $service)
     {
     }
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $search = $request->input('search');
+
         return Inertia::render('Country/Index', [
             'canLogin'      => Route::has('login'),
             'canRegister'   => Route::has('register'),
-            'countries' => $this->service->list(),
+            'countries' => $this->service->list($search),
         ]);
     }
 

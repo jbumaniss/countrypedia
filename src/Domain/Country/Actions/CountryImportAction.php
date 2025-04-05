@@ -8,8 +8,10 @@ use Domain\Country\Models\Country;
 use Domain\Language\DataTransferObjects\LanguageDto;
 use Domain\Language\Models\Language;
 use Domain\Region\Models\Region;
+use Domain\Region\Models\SubRegion;
 use Domain\Shared\Services\ApiService;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -27,35 +29,64 @@ class CountryImportAction
     public function execute(): string
     {
         try{
-            $response = $this->apiService->countryResource()->list();
+            $response = $this->fetchData();
         } catch (ConnectionException $e) {
-            $shortError = substr($e->getMessage(), 0, 100);
             Log::error('Failed to fetch countries data', [
-                'exception' => $shortError,
+                'exception' => $e->getMessage(),
             ]);
-            return "Failed to fetch countries data. Error: {$shortError}";
+            return 'Failed to fetch countries data. Error: ' . $e->getMessage();
         }
 
         $countriesData = $response->getData(true);
 
-        $this->processCountriesData($countriesData);
+        if($response->status() !== 200) {
+            $bodyString = implode('', $countriesData);
+            Log::error('Failed to fetch countries data', [
+                'response' => $bodyString
+            ]);
+            return 'Failed to fetch countries data. Error: ' . $bodyString;
+        }
+
+        $countriesDtos = $this->processCountriesData($countriesData);
+        $this->insertCountriesData($countriesDtos);
 
         return "Countries imported successfully!";
     }
 
     /**
-     * @param  array  $countriesData
+     * @return Collection<int, CountryDto>
      */
-    private function processCountriesData(array $countriesData): void
+    private function processCountriesData(array $countriesData): Collection
     {
-        /** @var Collection<int, CountryDto>$countriesDtos */
-        $countriesDtos = collect($countriesData)->map(function ($country) {
+        return collect($countriesData)->map(function ($country) {
+            if(!is_array($country) || empty($country)) {
+                return null;
+            }
             return CountryDto::fromArray($country);
-        });
+        })
+            ->filter();
+    }
 
+    /**
+     * @throws ConnectionException
+     */
+    private function fetchData(): JsonResponse
+    {
+        return $this->apiService->countryResource()->list();
+    }
+
+    /**
+     * @param  Collection<int, CountryDto>  $countriesDtos
+     */
+    private function insertCountriesData(Collection $countriesDtos): void
+    {
         $countriesDtos->each(function (CountryDto $countryDto) {
             $region = Region::query()->firstOrCreate([
                 'name' => $countryDto->region,
+            ]);
+            $subRegion = SubRegion::query()->firstOrCreate([
+                'region_id' => $region->id,
+                'name' => $countryDto->subRegion,
             ]);
 
             $country = Country::query()->firstOrCreate([
@@ -66,6 +97,7 @@ class CountryImportAction
                 'flag' => $countryDto->flag,
                 'area' => $countryDto->area,
                 'region_id' => $region->id,
+                'sub_region_id' => $subRegion->id,
             ]);
 
             $country->languages()->sync(

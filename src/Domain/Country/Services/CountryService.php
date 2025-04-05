@@ -18,6 +18,7 @@ class CountryService
                     $query->where('official', 'like', "%{$search}%")
                         ->orWhere('common', 'like', "%{$search}%");
                 })
+            ->orderBy('common_name')
             ->get();
     }
 
@@ -36,6 +37,7 @@ class CountryService
         $country->setRelation('neighbours', Country::query()
             ->where('sub_region_id', $country->sub_region_id)
             ->where('id', '!=', $country->id)
+            ->orderBy('common_name')
             ->get());
 
         $rank = Country::query()

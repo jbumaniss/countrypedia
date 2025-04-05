@@ -14,7 +14,9 @@ trait CanSendGetRequest
      */
     public function get(PendingRequest $request, string $url): Response
     {
-        $response = $request->get(url: $url);
+        $response = $request->timeout(30)
+            ->retry(5, 1000)
+            ->get(url: $url);
 
         if ($response->serverError()) {
             Log::error("API: {$response->reason()}");

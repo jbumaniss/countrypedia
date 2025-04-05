@@ -1,9 +1,13 @@
 {
   "name": "Existing Docker Compose (Extend)",
-  "dockerComposeFile": [
-    "../docker-compose.yml",
-    "../docker-compose.override.yml"
-  ],
+  "build": {
+    "dockerfile": "../Docker/Runtimes/8.4/Dockerfile",
+    "context": "..",
+    "args": {
+      "WWWGROUP": "1000",
+      "WWWUSER": "1000"
+    }
+  },
   "service": "laravel.test",
   "workspaceFolder": "/var/www/html",
   "customizations": {

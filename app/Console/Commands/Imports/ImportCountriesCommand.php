@@ -38,7 +38,6 @@ class ImportCountriesCommand extends Command
             return CommandAlias::FAILURE;
         }
 
-        $this->info('Countries data imported successfully.');
         return CommandAlias::SUCCESS;
     }
 }

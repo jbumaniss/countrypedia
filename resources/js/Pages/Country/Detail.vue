@@ -1,18 +1,53 @@
 <template>
   <ion-page>
     <AppLayout title="Country Details">
-      <div class="container mx-auto p-4" v-if="country">
-        <h2>{{ country.common_name }}</h2>
-        <p><strong>Official Name:</strong> {{ country.official_name }}</p>
-        <p><strong>Country Code:</strong> {{ country.country_code }}</p>
-        <p><strong>Population:</strong> {{ country.population }}</p>
-        <p><strong>Population rank:</strong> {{ country.population_rank }}</p>
-        <p><strong>Flag:</strong> <span v-html="country.flag"></span></p>
-        <p><strong>Area:</strong> {{ country.area }} km²</p>
-        <ion-button @click="toggleFavorite" color="primary">
-          <ion-icon slot="start" :icon="isFavorite ? heart : heartOutline"></ion-icon>
-          {{ isFavorite ? 'Unmark Favorite' : 'Mark as Favorite' }}
-        </ion-button>
+      <ion-card>
+        <ion-card-content>
+        <ion-list v-if="country">
+          <ion-list-header lines="inset" class="font-bold text-xl">
+            <ion-label>
+              {{ country.common_name }}
+            </ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>
+              Official Name: {{ country.official_name }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Country Code: {{ country.country_code }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Population: {{ country.population }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Population rank: {{ country.population_rank }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Flag: <span v-html="country.flag"></span>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Area: {{ country.area }} km²
+            </ion-label>
+          </ion-item>
+        </ion-list>
+          <ion-buttons>
+            <ion-button @click="toggleFavorite" color="primary">
+              <ion-icon slot="start" :icon="isFavorite ? heart : heartOutline"></ion-icon>
+              {{ isFavorite ? 'Unmark Favorite' : 'Mark as Favorite' }}
+            </ion-button>
+          </ion-buttons>
+        </ion-card-content>
+      </ion-card>
 
         <CountryList
             v-if="country && country.neighbours && country.neighbours?.length > 0"
@@ -26,7 +61,6 @@
             :languages="country.languages"
         />
 
-      </div>
       <div class="container mx-auto p-4" v-else>
         <p>Waiting...</p>
 
@@ -61,9 +95,6 @@ export default {
       heartOutline,
       localFavorite: false
     };
-  },
-  created() {
-    console.log(this.country);
   },
   computed: {
     isFavorite() {

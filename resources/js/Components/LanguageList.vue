@@ -1,6 +1,9 @@
 <template>
   <ion-list>
-    <ion-list-header>{{ headerTitle }}</ion-list-header>
+    <ion-list-header
+        lines="inset"
+        class="font-bold"
+    >{{ headerTitle }}</ion-list-header>
     <ion-item
         v-for="language in languages"
         :key="language.id"

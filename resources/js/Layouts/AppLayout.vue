@@ -3,7 +3,9 @@
 <ion-header>
   <ion-toolbar class="bg-blue-500">
     <ion-breadcrumbs>
-      <ion-breadcrumb :href="route('countries.index')">Countries</ion-breadcrumb>
+      <ion-breadcrumb :href="route('countries.index')">Countries
+        <ion-icon :icon="globeOutline"></ion-icon>
+      </ion-breadcrumb>
     </ion-breadcrumbs>
   </ion-toolbar>
 </ion-header>
@@ -14,6 +16,8 @@
 </template>
 
 <script>
+import {globeOutline, heart} from 'ionicons/icons';
+
 export default {
   name: 'AppLayout',
   props: {
@@ -21,7 +25,12 @@ export default {
       type: String,
       default: 'Countrypedia'
     }
-  }
+  },
+  data() {
+    return {
+      globeOutline
+    };
+  },
 };
 </script>
 

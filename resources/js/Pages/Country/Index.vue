@@ -11,8 +11,6 @@
       </ion-card-content>
     </ion-card>
 
-
-
       <CountryList
           v-if="favoriteCountriesToShow.length > 0"
           header-title="Favorite Countries"

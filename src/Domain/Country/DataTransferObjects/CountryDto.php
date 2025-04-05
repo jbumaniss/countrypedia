@@ -21,7 +21,7 @@ class CountryDto extends Data
         public string $flag,
         public float $area,
         public string $region,
-        public string $subRegion,
+        public ?string $subRegion = null,
         public Collection $languages,
         public Collection $countryAliases,
     )

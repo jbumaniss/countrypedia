@@ -3,7 +3,6 @@
 namespace Tests\Domain\Country\Builders;
 
 use Domain\Country\Models\Country;
-use Domain\Region\Models\SubRegion;
 use Tests\TestCase;
 
 class CountryBuilderTest extends TestCase

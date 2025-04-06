@@ -27,7 +27,6 @@ class ImportCountriesCommandTest extends TestCase
         $this->assertEquals('import:countries', $command->getName());
     }
 
-    //test when feils
     public function test_import_countries_command_failure(): void
     {
         $this->mock(CountryImportAction::class, function ($mock) {

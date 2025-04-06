@@ -4,7 +4,6 @@ namespace Domain\Country\Responses;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CountryJsonResponse extends JsonResponse
 {

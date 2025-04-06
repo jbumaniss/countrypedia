@@ -2,8 +2,6 @@
 
 namespace Domain\Language\DataTransferObjects;
 
-use Domain\Country\Models\Country;
-use Illuminate\Support\Arr;
 use Spatie\LaravelData\Data;
 
 class LanguageDto extends Data

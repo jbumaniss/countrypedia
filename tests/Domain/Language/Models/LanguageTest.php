@@ -36,6 +36,6 @@ class LanguageTest extends TestCase
         $this->assertInstanceOf(
             BelongsToMany::class, $language->countries(), 'Language model does not have the correct relationship'
         );
-        $this->assertEquals($language->id, $language->countries()->first()->id, 'Language model does not have the correct relationship');
+        $this->assertEquals($country->id, $language->countries()->first()->id, 'Language model does not have the correct relationship');
     }
 }

@@ -39,7 +39,6 @@ class CountryServiceTest extends TestCase
 
     public function test_list_with_search(): void
     {
-
         $countryA = Country::factory()->create([
             'common_name' => 'Bravo',
         ]);

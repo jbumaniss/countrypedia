@@ -34,9 +34,11 @@ class CountryBuilder extends Builder
      */
     public function filterBySearch(?string $search = null): self
     {
-        return $this->whereHas('aliases', function ($query) use ($search) {
-            $query->where('official', 'like', "%{$search}%")
-                ->orWhere('common', 'like', "%{$search}%");
+        return $this->when($search, function ($query) use ($search) {
+            $query->whereHas('aliases', function ($query) use ($search) {
+                $query->where('official', 'like', "%{$search}%")
+                    ->orWhere('common', 'like', "%{$search}%");
+            });
         });
     }
 

@@ -29,7 +29,7 @@ use Illuminate\Support\Collection;
  * @property Collection<int, Language> $languages
  * @property Collection<int, CountryAlias> $translations
  * @property Collection<int, CountryAlias> $aliases
- * @property array $neighbours
+ * @property array $neighbors
  */
 class Country extends Model
 {

@@ -86,28 +86,27 @@ class CountryBuilderTest extends TestCase
         $this->assertNotNull($findCountryB);
     }
 
-    public function test_it_can_find_by_neighbors(): void
+    public function test_it_can_find_by_fifa_codes(): void
     {
-        $neighbor = "neighbor a";
+        $fifa = 'BR';
         $countryA = Country::factory()->create([
             'common_name' => 'Bravo',
-            'neighbors' => [$neighbor],
+            'neighbors' => [$fifa],
 
         ]);
         $countryB = Country::factory()->create([
             'common_name' => 'Alpha',
-        ]);
-        $countryA->aliases()->create([
-            'name' => $neighbor,
+            'fifa' => $fifa
         ]);
 
-        $response = Country::query()->findByNeighbors([$neighbor])->get();
+        $response = Country::query()->findByFifaCodes($countryA->neighbors)
+            ->get();
 
         $this->assertCount(1, $response);
         $findCountryA = $response->firstWhere('id', $countryA->id);
         $findCountryB = $response->firstWhere('id', $countryB->id);
-        $this->assertNotNull($findCountryA);
-        $this->assertNull($findCountryB);
+        $this->assertNull($findCountryA);
+        $this->assertNotNull($findCountryB);
     }
 
     public function test_it_can_calculate_country_rank(): void

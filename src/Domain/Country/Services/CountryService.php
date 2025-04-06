@@ -30,7 +30,7 @@ class CountryService
         if(!empty($country->neighbors)) {
             $country->setRelation(
                 'neighbours',
-                Country::query()->findByNeighbors(
+                Country::query()->findByFifaCodes(
                     neighbors: $country->neighbors
                 )
                     ->get()

@@ -42,7 +42,7 @@ class CountryBuilder extends Builder
         });
     }
 
-    public function findByNeighbors(array $neighbors): self
+    public function findByFifaCodes(array $neighbors): self
     {
         return $this->whereIn('fifa', $neighbors)
             ->orderBy('common_name');

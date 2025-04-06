@@ -100,27 +100,23 @@ class CountryServiceTest extends TestCase
 
     public function test_show_with_neighbours(): void
     {
-        $validAlias = "neighbor a";
-        $invalidAlias = "neighbor b";
+        $validFifa = "neighbor a";
+        $invalidFifa = "neighbor b";
         $countryA = Country::factory()
             ->create([
                 'common_name' => 'Bravo',
-                'neighbors' => [$validAlias],
+                'neighbors' => [$validFifa],
             ]);
         $countryB = Country::factory()
             ->create([
                 'common_name' => 'Alpha',
+                'fifa' => $validFifa,
             ]);
-        $countryB->aliases()->create([
-            'name' => $validAlias,
-        ]);
         $invalidCountry = Country::factory()
             ->create([
                 'common_name' => 'Invalid',
+                'fifa' => $invalidFifa,
             ]);
-        $invalidCountry->aliases()->create([
-            'name' => $invalidAlias,
-        ]);
 
         $response = $this->service->show($countryA->id);
 

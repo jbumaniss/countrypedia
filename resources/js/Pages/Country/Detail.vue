@@ -73,8 +73,8 @@
 import AppLayout from '../../Layouts/AppLayout.vue';
 import { heart, heartOutline } from 'ionicons/icons';
 import { getFavorites, addFavorite, removeFavorite } from '@/utils/favorites.js';
-import CountryList from "@/Components/CountryList.vue";
-import LanguageList from "@/Components/LanguageList.vue";
+import CountryList from "@/Pages/Country/Partials/CountryList.vue";
+import LanguageList from "@/Pages/Language/Partials/LanguageList.vue";
 
 export default {
   name: 'CountryDetails',

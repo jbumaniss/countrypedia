@@ -29,8 +29,8 @@
 
 <script>
 import AppLayout from '../../Layouts/AppLayout.vue';
-import CountryList from "@/Components/CountryList.vue";
-import LanguageList from "@/Components/LanguageList.vue";
+import LanguageList from "@/Pages/Language/Partials/LanguageList.vue";
+import CountryList from "@/Pages/Country/Partials/CountryList.vue";
 
 export default {
   name: 'CountryDetails',

@@ -21,7 +21,7 @@
 
                   <div class="p-6 text-gray-900" v-if="isSupervisor">
                     <Link
-                        href="/supervisor/action"
+                        :href="route('supervisor.action')"
                         method="post"
                         class="text-sm text-gray-700 dark:text-gray-500 hover:underline"
                     >

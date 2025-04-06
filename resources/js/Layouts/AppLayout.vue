@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {globeOutline, heart} from 'ionicons/icons';
+import {globeOutline} from 'ionicons/icons';
 
 export default {
   name: 'AppLayout',

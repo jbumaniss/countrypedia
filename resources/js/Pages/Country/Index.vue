@@ -22,9 +22,9 @@
 <script>
 import AppLayout from '../../Layouts/AppLayout.vue';
 import SearchInput from '../../Components/SearchInput.vue';
-import CountryList from '../../Components/CountryList.vue';
 import { getFavorites } from '@/utils/favorites.js';
 import { router } from '@inertiajs/vue3'
+import CountryList from "@/Pages/Country/Partials/CountryList.vue";
 
 export default {
   name: 'Home',

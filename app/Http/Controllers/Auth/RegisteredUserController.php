@@ -36,7 +36,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $isUsersAllowedToRegister = config('app.allow_user_registration');
+        $isUsersAllowedToRegister = config('app.is_user_allowed_to_register');
         $allowedEmailList = config('app.user_registration_exclusion_list', []);
         $abort = !$isUsersAllowedToRegister && !in_array($request->email, $allowedEmailList, true);
 

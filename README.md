@@ -25,18 +25,18 @@ Countrypedia is a Laravel-based country encyclopedia web application. This READM
    cp .env.example .env
 ```
 
-Generate the application key:
-
-```bash
-    ./vendor/bin/sail artisan key:generate
-```
-
 3. **Install Dependencies**
 
-   If you are using Laravel Sail, run the following command to install dependencies:
+   Composer install:
 
 ```bash
-   ./vendor/bin/sail composer install
+   composer install
+```
+
+   Start the application using Sail:
+
+```bash
+   ./vendor/bin/sail up -d
 ```
 
    Install NPM dependencies:
@@ -44,7 +44,13 @@ Generate the application key:
    ./vendor/bin/sail npm install
 ```
 
-4. **Run Migrations**
+4. **Generate the application key**
+
+```bash
+    ./vendor/bin/sail artisan key:generate
+```
+
+5. **Run Migrations**
 
    To set up the database, run the migrations:
 
@@ -52,7 +58,7 @@ Generate the application key:
    ./vendor/bin/sail artisan migrate
 ```
 
-5. **Import Countries**
+6  **Import Countries**
 
    To import countries, run the following command:
 
@@ -60,17 +66,9 @@ Generate the application key:
    ./vendor/bin/sail artisan import:countries
 ```
 
-6. **Run the Application**
-
-   Start the application using Sail:
-
-```bash
-   ./vendor/bin/sail up
-```
-
 7. **Build Assets**
 
-   If you are using Laravel Mix, run the following command to build assets:
+   Build the assets using NPM:
 
 ```bash
    ./vendor/bin/sail npm run dev

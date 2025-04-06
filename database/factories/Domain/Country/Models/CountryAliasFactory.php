@@ -24,10 +24,8 @@ class CountryAliasFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => $this->faker->unique()->languageCode(),
-            'official' => fake()->name(),
-            'common' => fake()->name(),
-            'country_id' => Country::factory()->create()->id,
+            'name' => fake()->name(),
+            'country_id' => Country::factory(),
         ];
     }
 }

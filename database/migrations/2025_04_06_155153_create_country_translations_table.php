@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('country_aliases', function (Blueprint $table) {
+        Schema::create('country_translations', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
+            $table->string('code');
+            $table->string('official');
+            $table->string('common');
 
             $table->unsignedBigInteger('country_id');
             $table->foreign('country_id')->references('id')
                 ->on('countries');
-            $table->index('name');
+            $table->index('official');
+            $table->index('common');
 
             $table->timestamps();
         });
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('country_aliases');
+        Schema::dropIfExists('country_translations');
     }
 };

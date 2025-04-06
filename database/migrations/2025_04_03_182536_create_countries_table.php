@@ -17,9 +17,11 @@ return new class extends Migration
             $table->string('common_name');
             $table->string('official_name');
             $table->string('country_code')->unique();
+            $table->string('fifa')->nullable();
             $table->bigInteger('population');
             $table->string('flag');
             $table->float('area');
+            $table->json('neighbors')->nullable();
 
             $table->unsignedBigInteger('region_id');
             $table->unsignedBigInteger('sub_region_id')->nullable();

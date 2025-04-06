@@ -27,6 +27,9 @@ use Illuminate\Support\Collection;
  * @property Region $region
  * @property SubRegion $subRegion
  * @property Collection<int, Language> $languages
+ * @property Collection<int, CountryAlias> $translations
+ * @property Collection<int, CountryAlias> $aliases
+ * @property array $neighbours
  */
 class Country extends Model
 {
@@ -37,6 +40,7 @@ class Country extends Model
     protected $casts = [
         'population' => 'integer',
         'area' => 'float',
+        'neighbors' => 'array',
     ];
 
     /**
@@ -70,6 +74,14 @@ class Country extends Model
     public function languages(): BelongsToMany
     {
         return $this->belongsToMany(Language::class, 'country_language');
+    }
+
+    /**
+     * @return HasMany<CountryAlias, Country>
+     */
+    public function translations(): HasMany
+    {
+        return $this->hasMany(CountryTranslation::class, 'country_id', 'id');
     }
 
     /**

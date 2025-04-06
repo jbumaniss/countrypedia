@@ -4,7 +4,7 @@
   <ion-toolbar class="bg-blue-500">
     <ion-breadcrumbs>
       <ion-breadcrumb :href="route('countries.index')">Countries
-        <ion-icon :icon="globeOutline"></ion-icon>
+        <ion-icon color="primary" :icon="globeOutline"></ion-icon>
       </ion-breadcrumb>
     </ion-breadcrumbs>
   </ion-toolbar>

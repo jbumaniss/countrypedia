@@ -11,9 +11,7 @@ use Spatie\LaravelData\Data;
 class CountryAliasDto extends Data
 {
     public function __construct(
-        public string $code,
-        public string $official,
-        public string $common,
+        public string $name,
     )
     {
     }

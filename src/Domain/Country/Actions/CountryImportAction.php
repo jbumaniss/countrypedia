@@ -4,6 +4,7 @@ namespace Domain\Country\Actions;
 
 use Domain\Country\DataTransferObjects\CountryAliasDto;
 use Domain\Country\DataTransferObjects\CountryDto;
+use Domain\Country\DataTransferObjects\CountryTranslationDto;
 use Domain\Country\Models\Country;
 use Domain\Language\DataTransferObjects\LanguageDto;
 use Domain\Language\Models\Language;
@@ -95,11 +96,13 @@ class CountryImportAction
                 'common_name' => $countryDto->commonName,
                 'official_name' => $countryDto->officialName,
                 'country_code' => $countryDto->countryCode,
+                'fifa' => $countryDto->fifa,
                 'population' => $countryDto->population,
                 'flag' => $countryDto->flag,
                 'area' => $countryDto->area,
                 'region_id' => $region->id,
                 'sub_region_id' => $subRegion?->id,
+                'neighbors' => $countryDto->borderAliases
             ]);
 
             $country->languages()->sync(
@@ -111,14 +114,23 @@ class CountryImportAction
                 })->pluck('id')
             );
 
-            $countryDto->countryAliases->each(function (CountryAliasDto $countryAliasDto)
+            $countryDto->translations->each(function (
+                CountryTranslationDto $translationDto
+            )
+                use ($country) {
+                $country->translations()->updateOrCreate([
+                    'country_id' => $country->id,
+                    'code' => $translationDto->code,
+                ], [
+                    'official' => $translationDto->official,
+                    'common' => $translationDto->common,
+                ]);
+            });
+            $countryDto->aliases->each(function (CountryAliasDto $aliasDto)
             use ($country) {
                 $country->aliases()->updateOrCreate([
                     'country_id' => $country->id,
-                    'code' => $countryAliasDto->code,
-                ], [
-                    'official' => $countryAliasDto->official,
-                    'common' => $countryAliasDto->common,
+                    'name' => $aliasDto->name
                 ]);
             });
         });

@@ -35,19 +35,16 @@ class CountryBuilder extends Builder
     public function filterBySearch(?string $search = null): self
     {
         return $this->when($search, function ($query) use ($search) {
-            $query->whereHas('aliases', function ($query) use ($search) {
+            $query->whereHas('translations', function ($query) use ($search) {
                 $query->where('official', 'like', "%{$search}%")
                     ->orWhere('common', 'like', "%{$search}%");
             });
         });
     }
 
-    public function findByRegion(int $regionId, ?int $exclude = null): self
+    public function findByNeighbors(array $neighbors): self
     {
-        return $this->where('sub_region_id', $regionId)
-            ->when($exclude, function ($query) use ($exclude) {
-                $query->where('id', '!=', $exclude);
-            })
+        return $this->whereIn('fifa', $neighbors)
             ->orderBy('common_name');
     }
 

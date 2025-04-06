@@ -27,14 +27,15 @@ class CountryService
             return null;
         }
 
-        $country->setRelation(
-            'neighbours',
-            Country::query()->findByRegion(
-                    regionId: $country->sub_region_id,
-                    exclude: $country->id
-            )
-            ->get()
-        );
+        if(!empty($country->neighbors)) {
+            $country->setRelation(
+                'neighbours',
+                Country::query()->findByNeighbors(
+                    neighbors: $country->neighbors
+                )
+                    ->get()
+            );
+        }
 
         $rank = Country::query()
             ->calculateCountryRank($country->population);

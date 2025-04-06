@@ -11,7 +11,8 @@ class CountryDto extends Data
 {
     /**
      * @param  Collection<int, LanguageDto>  $languages
-     * @param  Collection<int, CountryAliasDto>  $countryAliases
+     * @param Collection<int, CountryTranslationDto> $translations
+     * @param  Collection<int, CountryAliasDto>  $aliases
      */
     public function __construct(
         public string $commonName,
@@ -21,9 +22,12 @@ class CountryDto extends Data
         public string $flag,
         public float $area,
         public string $region,
-        public ?string $subRegion = null,
         public Collection $languages,
-        public Collection $countryAliases,
+        public Collection $translations,
+        public Collection $aliases,
+        public ?string $fifa = null,
+        public ?array $borderAliases = null,
+        public ?string $subRegion = null,
     )
     {
     }
@@ -34,11 +38,14 @@ class CountryDto extends Data
         $commonName = Arr::get($names, 'common');
         $officialName = Arr::get($names, 'official');
         $countryCode = Arr::get($country, 'cca2');
+        $fifa = Arr::get($country, 'fifa');
         $population = Arr::get($country, 'population');
         $flag = Arr::get($country, 'flag');
         $area = Arr::get($country, 'area');
         $region = Arr::get($country, 'region');
         $subRegion = Arr::get($country, 'subregion');
+        $borderAliases = Arr::get($country, 'borders');
+
         $languages = LanguageDto::collect(
             collect(Arr::get($country, 'languages'))->map(function ($language, $key) {
                 return [
@@ -47,12 +54,19 @@ class CountryDto extends Data
                 ];
             })
         );
-        $countryAliases = CountryAliasDto::collect(
+        $translations = CountryTranslationDto::collect(
             collect(Arr::get($country, 'translations'))->map(function ($translation, $key) {
                 return [
                     'code' => $key,
                     'official' => Arr::get($translation, 'official'),
                     'common' => Arr::get($translation, 'common'),
+                ];
+            })
+        );
+        $aliases = CountryAliasDto::collect(
+            collect(Arr::get($country, 'altSpellings'))->map(function ($alias, $key) {
+                return [
+                    'name' => $alias
                 ];
             })
         );
@@ -64,9 +78,12 @@ class CountryDto extends Data
             flag: $flag,
             area: $area,
             region: $region,
-            subRegion: $subRegion,
             languages: $languages,
-            countryAliases: $countryAliases,
+            translations: $translations,
+            aliases: $aliases,
+            fifa: $fifa,
+            borderAliases: $borderAliases,
+            subRegion: $subRegion,
         );
     }
 }

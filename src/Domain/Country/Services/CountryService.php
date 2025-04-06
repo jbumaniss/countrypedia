@@ -14,37 +14,30 @@ class CountryService
     {
         return Country::query()
             ->list()
-            ->when($search, function ($query, $search) {
-                $query->whereHas('aliases', function ($query) use ($search) {
-                    $query->where('official', 'like', "%{$search}%")
-                        ->orWhere('common', 'like', "%{$search}%");
-                });
-            })
-            ->orderBy('common_name')
+            ->filterBySearch($search)
             ->get();
     }
 
     public function show(int $id): ?Country
     {
         $country = Country::query()
-            ->with([
-                'languages',
-            ])
-            ->find($id);
+            ->findById($id);
 
         if(!$country) {
             return null;
         }
 
-        $country->setRelation('neighbours', Country::query()
-            ->where('sub_region_id', $country->sub_region_id)
-            ->where('id', '!=', $country->id)
-            ->orderBy('common_name')
-            ->get());
+        $country->setRelation(
+            'neighbours',
+            Country::query()->findByRegion(
+                    regionId: $country->sub_region_id,
+                    exclude: $country->id
+            )
+            ->get()
+        );
 
         $rank = Country::query()
-                ->where('population', '>', $country->population)
-                ->count() + 1;
+            ->calculateCountryRank($country->population);
 
         $country->setAttribute('population_rank', $rank);
 

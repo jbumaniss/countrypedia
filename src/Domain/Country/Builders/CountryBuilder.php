@@ -17,6 +17,41 @@ class CountryBuilder extends Builder
      */
     public function list(): self
     {
-        return $this;
+        return $this->orderBy('common_name');
+    }
+
+    public function findById(int $id): ?Country
+    {
+        return $this->with([
+            'languages',
+        ])
+            ->find($id);
+    }
+
+    /**
+     * @param ?string $search
+     * @return CountryBuilder<Country>
+     */
+    public function filterBySearch(?string $search = null): self
+    {
+        return $this->whereHas('aliases', function ($query) use ($search) {
+            $query->where('official', 'like', "%{$search}%")
+                ->orWhere('common', 'like', "%{$search}%");
+        });
+    }
+
+    public function findByRegion(int $regionId, ?int $exclude = null): self
+    {
+        return $this->where('sub_region_id', $regionId)
+            ->when($exclude, function ($query) use ($exclude) {
+                $query->where('id', '!=', $exclude);
+            })
+            ->orderBy('common_name');
+    }
+
+    public function calculateCountryRank(int $population): int
+    {
+        return $this->where('population', '>', $population)
+            ->count() + 1;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Domain\Country\Models;
 
+use Domain\Country\Models\Country;
 use Domain\Country\Models\CountryAlias;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,6 +27,7 @@ class CountryAliasFactory extends Factory
             'code' => $this->faker->unique()->languageCode(),
             'official' => fake()->name(),
             'common' => fake()->name(),
+            'country_id' => Country::factory()->create()->id,
         ];
     }
 }

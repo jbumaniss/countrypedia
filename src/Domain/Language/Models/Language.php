@@ -25,14 +25,6 @@ class Language extends Model
     protected $guarded = [];
 
     /**
-     * @return BelongsToMany<Country, Language>
-     */
-    public function countries(): BelongsToMany
-    {
-        return $this->belongsToMany(Country::class, 'country_language');
-    }
-
-    /**
      * @param  Builder  $query
      * @return LanguageBuilder<Language>
      */
@@ -41,4 +33,11 @@ class Language extends Model
         return new LanguageBuilder($query);
     }
 
+    /**
+     * @return BelongsToMany<Country, Language>
+     */
+    public function countries(): BelongsToMany
+    {
+        return $this->belongsToMany(Country::class, 'country_language');
+    }
 }

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -25,6 +26,7 @@ use Illuminate\Database\Query\Builder;
  * @property int $sub_region_id
  * @property Region $region
  * @property SubRegion $subRegion
+ * @property Collection<int, Language> $languages
  */
 class Country extends Model
 {

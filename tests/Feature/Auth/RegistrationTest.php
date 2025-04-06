@@ -16,7 +16,7 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register(): void
     {
-        Config::set('app.allow_user_registration', true);
+        Config::set('app.is_user_allowed_to_register', true);
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',

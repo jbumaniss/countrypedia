@@ -32,7 +32,7 @@ class CountryBuilderTest extends TestCase
         $countryA = Country::factory()->create([
             'common_name' => 'Bravo',
         ]);
-        $countryA->aliases()->create([
+        $countryA->translations()->create([
             'code' => 'BR',
             'official' => 'Bravo',
             'common' => 'Bravo',
@@ -40,7 +40,7 @@ class CountryBuilderTest extends TestCase
 
         $countryB = Country::factory()->create([
             'common_name' => 'Alpha',
-        ])->aliases()->create([
+        ])->translations()->create([
             'code' => 'AL',
             'official' => 'Alpha',
             'common' => 'Alpha',
@@ -60,7 +60,7 @@ class CountryBuilderTest extends TestCase
         $countryA = Country::factory()->create([
             'common_name' => 'Bravo',
         ]);
-        $countryA->aliases()->create([
+        $countryA->translations()->create([
             'code' => 'BR',
             'official' => 'Bravo',
             'common' => 'Bravo',
@@ -69,7 +69,7 @@ class CountryBuilderTest extends TestCase
         $countryB = Country::factory()->create([
             'common_name' => 'Alpha',
         ]);
-        $countryB->aliases()->create([
+        $countryB->translations()->create([
             'code' => 'AL',
             'official' => 'Alpha',
             'common' => 'Alpha',
@@ -86,49 +86,28 @@ class CountryBuilderTest extends TestCase
         $this->assertNotNull($findCountryB);
     }
 
-    public function test_it_can_find_by_region(): void
+    public function test_it_can_find_by_neighbors(): void
     {
-        $region = SubRegion::factory()->create();
+        $neighbor = "neighbor a";
         $countryA = Country::factory()->create([
-            'sub_region_id' => $region->id,
             'common_name' => 'Bravo',
+            'neighbors' => [$neighbor],
+
         ]);
         $countryB = Country::factory()->create([
-            'sub_region_id' => $region->id,
             'common_name' => 'Alpha',
         ]);
-
-        $response = Country::query()->findByRegion($region->id)->get();
-
-        $this->assertCount(2, $response);
-        $findCountryA = $response->firstWhere('id', $countryA->id);
-        $findCountryB = $response->firstWhere('id', $countryB->id);
-        $this->assertNotNull($findCountryA);
-        $this->assertNotNull($findCountryB);
-    }
-
-    public function test_it_can_find_by_region_with_exclude_id(): void
-    {
-        $region = SubRegion::factory()->create();
-        $countryA = Country::factory()->create([
-            'sub_region_id' => $region->id,
-            'common_name' => 'Bravo',
-        ]);
-        $countryB = Country::factory()->create([
-            'sub_region_id' => $region->id,
-            'common_name' => 'Alpha',
+        $countryA->aliases()->create([
+            'name' => $neighbor,
         ]);
 
-        $response = Country::query()->findByRegion(
-            $region->id,
-            $countryA->id
-        )->get();
+        $response = Country::query()->findByNeighbors([$neighbor])->get();
 
         $this->assertCount(1, $response);
         $findCountryA = $response->firstWhere('id', $countryA->id);
         $findCountryB = $response->firstWhere('id', $countryB->id);
-        $this->assertNull($findCountryA);
-        $this->assertNotNull($findCountryB);
+        $this->assertNotNull($findCountryA);
+        $this->assertNull($findCountryB);
     }
 
     public function test_it_can_calculate_country_rank(): void

@@ -42,7 +42,7 @@ class CountryServiceTest extends TestCase
         $countryA = Country::factory()->create([
             'common_name' => 'Bravo',
         ]);
-        $countryA->aliases()->create([
+        $countryA->translations()->create([
             'code' => 'BR',
             'official' => 'Bravo',
             'common' => 'Bravo',
@@ -50,7 +50,7 @@ class CountryServiceTest extends TestCase
 
         $countryB = Country::factory()->create([
             'common_name' => 'Alpha',
-        ])->aliases()->create([
+        ])->translations()->create([
             'code' => 'AL',
             'official' => 'Alpha',
             'common' => 'Alpha',
@@ -100,21 +100,27 @@ class CountryServiceTest extends TestCase
 
     public function test_show_with_neighbours(): void
     {
-        $subRegion = SubRegion::factory()->create([
-            'name' => 'Sub A',
-        ]);
-        $anotherSubRegion = SubRegion::factory()->create([
-            'name' => 'Sub B',
-        ]);
+        $validAlias = "neighbor a";
+        $invalidAlias = "neighbor b";
         $countryA = Country::factory()
-            ->for($subRegion)
-            ->create();
+            ->create([
+                'common_name' => 'Bravo',
+                'neighbors' => [$validAlias],
+            ]);
         $countryB = Country::factory()
-            ->for($subRegion)
-            ->create();
+            ->create([
+                'common_name' => 'Alpha',
+            ]);
+        $countryB->aliases()->create([
+            'name' => $validAlias,
+        ]);
         $invalidCountry = Country::factory()
-            ->for($anotherSubRegion)
-            ->create();
+            ->create([
+                'common_name' => 'Invalid',
+            ]);
+        $invalidCountry->aliases()->create([
+            'name' => $invalidAlias,
+        ]);
 
         $response = $this->service->show($countryA->id);
 

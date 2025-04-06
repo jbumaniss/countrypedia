@@ -5,6 +5,7 @@ namespace Tests\Domain\Country\Actions;
 use Domain\Country\Actions\CountryImportAction;
 use Domain\Country\Models\Country;
 use Domain\Country\Models\CountryAlias;
+use Domain\Country\Models\CountryTranslation;
 use Domain\Language\Models\Language;
 use Domain\Region\Models\Region;
 use Domain\Region\Models\SubRegion;
@@ -38,6 +39,7 @@ class CountryImportActionTest extends TestCase
                 ],
                 'tld' => ['.gd'],
                 'cca2' => 'GD',
+                'fifa' => 'GRD',
                 'population' => 112523,
                 'flag' => '🇬🇩',
                 'area' => 344,
@@ -46,6 +48,8 @@ class CountryImportActionTest extends TestCase
                 'languages' => [
                     'eng' => 'English',
                 ],
+                'borders' => ['VCT', 'TTO'],
+                'altSpellings' => ['GD', 'Grenada'],
                 'translations' => [
                     'ara' => [
                         'official' => 'GrenadaA',
@@ -78,6 +82,7 @@ class CountryImportActionTest extends TestCase
                 'languages' => [
                     'eng' => 'English',
                 ],
+                'altSpellings' => ['GS', 'South Georgia and the South Sandwich Islands'],
                 'translations' => [
                     'ara' => [
                       'common' => "SouthA",
@@ -111,7 +116,10 @@ class CountryImportActionTest extends TestCase
         $subRegionA = Subregion::query()->firstWhere('name', 'Caribbean');
         $countryA = Country::query()->firstWhere('common_name', 'Grenada');
         $languageA = Language::query()->firstWhere('name', 'English');
-        $countryAliasesA = CountryAlias::query()->where('country_id', $countryA->id)->get();
+        $aliasesA = CountryAlias::query()->where('country_id', $countryA->id)->get();
+        $translationsA = CountryTranslation::query()->where('country_id',
+            $countryA->id)
+            ->get();
 
         $this->assertNotNull($regionA);
         $this->assertNotNull($subRegionA);
@@ -119,6 +127,7 @@ class CountryImportActionTest extends TestCase
         $this->assertEquals('Grenada', $countryA->official_name);
         $this->assertEquals('Grenada', $countryA->common_name);
         $this->assertEquals('GD', $countryA->country_code);
+        $this->assertEquals('GRD', $countryA->fifa);
         $this->assertEquals(112523, $countryA->population);
         $this->assertEquals('🇬🇩', $countryA->flag);
         $this->assertEquals(344, $countryA->area);
@@ -129,15 +138,20 @@ class CountryImportActionTest extends TestCase
         $this->assertEquals('English', $languageA->name);
         $this->assertEquals('eng', $languageA->code);
         $this->assertEquals(1, $countryA->languages()->count());
-        $this->assertEquals(2, $countryAliasesA->count());
-        $countryAliasesA->each(function (CountryAlias $countryAlias) {
-            $this->assertContains($countryAlias->official, ['GrenadaA', 'GrenadaB']);
+        $this->assertEquals(2, $aliasesA->count());
+        $aliasesA->each(function (CountryAlias $alias) {
+            $this->assertContains($alias->name, ['GD', 'Grenada']);
+        });
+        $this->assertEquals(2, $translationsA->count());
+        $translationsA->each(function (CountryTranslation $translation) {
+            $this->assertContains($translation->official, ['GrenadaA', 'GrenadaB']);
         });
 
         $regionB = Region::query()->firstWhere('name', 'Antarctic');
         $countryB = Country::query()->firstWhere('common_name', 'South Georgia and the South Sandwich Islands');
         $languageB = Language::query()->firstWhere('name', 'English');
-        $countryAliasesB = CountryAlias::query()->where('country_id', $countryB->id)->get();
+        $aliasesB = CountryAlias::query()->where('country_id', $countryB->id)->get();
+        $translationsB = CountryTranslation::query()->where('country_id', $countryB->id)->get();
         $this->assertNotNull($regionB);
         $this->assertNotNull($countryB);
         $this->assertEquals('South Georgia and the South Sandwich Islands', $countryB->official_name);
@@ -152,9 +166,13 @@ class CountryImportActionTest extends TestCase
         $this->assertEquals('English', $languageB->name);
         $this->assertEquals('eng', $languageB->code);
         $this->assertEquals(1, $countryB->languages()->count());
-        $this->assertEquals(2, $countryAliasesB->count());
-        $countryAliasesB->each(function (CountryAlias $countryAlias) {
-            $this->assertContains($countryAlias->official, ['SouthA', 'SouthB']);
+        $this->assertEquals(2, $aliasesB->count());
+        $aliasesB->each(function (CountryAlias $alias) {
+            $this->assertContains($alias->name, ['GS', 'South Georgia and the South Sandwich Islands']);
+        });
+        $this->assertEquals(2, $translationsB->count());
+        $translationsB->each(function (CountryTranslation $translation) {
+            $this->assertContains($translation->official, ['SouthA', 'SouthB']);
         });
     }
 

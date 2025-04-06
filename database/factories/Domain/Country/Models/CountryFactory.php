@@ -27,7 +27,7 @@ class CountryFactory extends Factory
         return [
             'common_name' => fake()->name(),
             'official_name' => fake()->name(),
-            'country_code' => fake()->countryCode(),
+            'country_code' => fake()->unique()->countryCode(),
             'population' => fake()->numberBetween(1000, 1000000),
             'flag' => fake()->safeColorName(),
             'area' => fake()->numberBetween(1000, 1000000),
